@@ -1,9 +1,9 @@
 import React, { Fragment, useState, useEffect } from "react";
 import axios from "axios";
 
-function useHackerNewsApi() {
-  const [data, setData] = useState({ hits: [] });
-  const [search, setSearch] = useState("redux");
+function useHackerNewsApi(initialSearch, initialData) {
+  const [data, setData] = useState(initialData);
+  const [search, setSearch] = useState(initialSearch);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 
@@ -27,7 +27,7 @@ function useHackerNewsApi() {
 
 function App() {
   const [query, setQuery] = useState("redux");
-  const [{ data, isLoading, isError }, doFetch] = useHackerNewsApi();
+  const [{ data, isLoading, isError }, doFetch] = useHackerNewsApi("redux", { hits: [] });
 
   function onSubmit(event) {
     event.preventDefault();
