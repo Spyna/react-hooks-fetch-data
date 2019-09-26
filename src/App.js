@@ -1,29 +1,33 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect,useReducer } from "react";
 import axios from "axios";
 
+const dataFetchReducer = (state, action) => {
+  //...
+};
+
 function useHackerNewsApi(initialSearch, initialData) {
-  const [data, setData] = useState(initialData);
   const [search, setSearch] = useState(initialSearch);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
+  const [state, dispatch] = useReducer(dataFetchReducer, {
+    isLoading: false,
+    isError: false,
+    data: initialData,
+  });
 
   useEffect(() => {
     let didCancel = false;
 
     const fetchData = async () => {
-      setIsError(false);
-      setIsLoading(true);
+      dispatch({ type: 'FETCH_INIT' });
       try {
         const result = await axios(`http://hn.algolia.com/api/v1/search?query=${search}`);
         if (!didCancel) {
-          setData(result.data);
+          dispatch({ type: 'FETCH_SUCCESS', payload: result.data });
         }
       } catch (error) {
         if (!didCancel) {
-          setIsError(true);
+          dispatch({ type: 'FETCH_FAILURE' });
         }
       }
-      setIsLoading(false);
     };
     fetchData();
     return () => {
@@ -31,7 +35,7 @@ function useHackerNewsApi(initialSearch, initialData) {
     };
   }, [search]);
 
-  return [{ data, isLoading, isError }, setSearch];
+  return [state, setSearch];
 }
 
 function App() {
