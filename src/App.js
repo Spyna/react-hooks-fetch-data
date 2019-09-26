@@ -3,14 +3,20 @@ import axios from "axios";
 function App() {
   const [data, setData] = useState({ hits: [] });
   const [query, setQuery] = useState("redux");
-  const [search, setSearch] = useState('redux');
+  const [search, setSearch] = useState("redux");
   const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
+      setIsError(false);
       setIsLoading(true);
-      const result = await axios(`http://hn.algolia.com/api/v1/search?query=${search}`);
-      setData(result.data);
+      try {
+        const result = await axios(`http://hn.alsgolia.com/api/v1/search?query=${search}`);
+        setData(result.data);
+      } catch (error) {
+        setIsError(true);
+      }
       setIsLoading(false);
     };
     fetchData();
@@ -23,6 +29,7 @@ function App() {
         Search
       </button>
       {isLoading && <div className="loading">Loading ...</div>}
+      {isError && <div className="error">Something went wrong ...</div>}
       <ul>
         {data.hits.map(item => (
           <li key={item.objectID}>
