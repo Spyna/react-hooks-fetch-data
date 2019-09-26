@@ -6,7 +6,7 @@ function App() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await axios("https://hn.algolia.com/api/v1/search?query=redux");
+      const result = await axios(`http://hn.algolia.com/api/v1/search?query=${query}`);
       setData(result.data);
     };
     fetchData();
