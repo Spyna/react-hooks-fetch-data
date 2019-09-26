@@ -7,7 +7,7 @@ function App() {
       'https://hn.algolia.com/api/v1/search?query=redux',
     );
     setData(result.data);
-  });
+  }, []);
   return (
     <ul>
       {data.hits.map(item => (
