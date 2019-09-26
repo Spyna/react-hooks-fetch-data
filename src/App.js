@@ -3,15 +3,15 @@ import axios from "axios";
 function App() {
   const [data, setData] = useState({ hits: [] });
   const [query, setQuery] = useState("redux");
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState('redux');
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await axios(`http://hn.algolia.com/api/v1/search?query=${query}`);
+      const result = await axios(`http://hn.algolia.com/api/v1/search?query=${search}`);
       setData(result.data);
     };
     fetchData();
-  }, [query]);
+  }, [search]);
 
   return (
     <Fragment>
