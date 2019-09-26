@@ -1,8 +1,8 @@
 import React, { Fragment, useState, useEffect } from "react";
 import axios from "axios";
-function App() {
+
+function useHackerNewsApi() {
   const [data, setData] = useState({ hits: [] });
-  const [query, setQuery] = useState("redux");
   const [search, setSearch] = useState("redux");
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -22,9 +22,16 @@ function App() {
     fetchData();
   }, [search]);
 
-  function onSubmit(event){
+  return [{ data, isLoading, isError }, setSearch];
+}
+
+function App() {
+  const [query, setQuery] = useState("redux");
+  const [{ data, isLoading, isError }, doFetch] = useHackerNewsApi();
+
+  function onSubmit(event) {
     event.preventDefault();
-    setSearch(query)
+    doFetch(query);
   }
 
   return (
