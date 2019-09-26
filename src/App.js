@@ -8,18 +8,27 @@ function useHackerNewsApi(initialSearch, initialData) {
   const [isError, setIsError] = useState(false);
 
   useEffect(() => {
+    let didCancel = false;
+
     const fetchData = async () => {
       setIsError(false);
       setIsLoading(true);
       try {
         const result = await axios(`http://hn.algolia.com/api/v1/search?query=${search}`);
-        setData(result.data);
+        if (!didCancel) {
+          setData(result.data);
+        }
       } catch (error) {
-        setIsError(true);
+        if (!didCancel) {
+          setIsError(true);
+        }
       }
       setIsLoading(false);
     };
     fetchData();
+    return () => {
+      didCancel = true;
+    };
   }, [search]);
 
   return [{ data, isLoading, isError }, setSearch];
