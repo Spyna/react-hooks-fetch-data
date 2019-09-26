@@ -10,7 +10,7 @@ function App() {
       setData(result.data);
     };
     fetchData();
-  }, []);
+  }, [query]);
 
   return (
     <Fragment>
