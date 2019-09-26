@@ -12,7 +12,7 @@ function App() {
       setIsError(false);
       setIsLoading(true);
       try {
-        const result = await axios(`http://hn.alsgolia.com/api/v1/search?query=${search}`);
+        const result = await axios(`http://hn.algolia.com/api/v1/search?query=${search}`);
         setData(result.data);
       } catch (error) {
         setIsError(true);
@@ -22,12 +22,19 @@ function App() {
     fetchData();
   }, [search]);
 
+  function onSubmit(event){
+    event.preventDefault();
+    setSearch(query)
+  }
+
   return (
     <Fragment>
-      <input type="text" value={query} onChange={event => setQuery(event.target.value)} />
-      <button type="button" onClick={() => setSearch(query)} disabled={isLoading}>
-        Search
-      </button>
+      <form onSubmit={onSubmit}>
+        <input type="text" value={query} onChange={event => setQuery(event.target.value)} />
+        <button type="submit" disabled={isLoading}>
+          Search
+        </button>
+      </form>
       {isLoading && <div className="loading">Loading ...</div>}
       {isError && <div className="error">Something went wrong ...</div>}
       <ul>
