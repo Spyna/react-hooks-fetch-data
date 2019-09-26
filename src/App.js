@@ -4,11 +4,14 @@ function App() {
   const [data, setData] = useState({ hits: [] });
   const [query, setQuery] = useState("redux");
   const [search, setSearch] = useState('redux');
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
+      setIsLoading(true);
       const result = await axios(`http://hn.algolia.com/api/v1/search?query=${search}`);
       setData(result.data);
+      setIsLoading(false);
     };
     fetchData();
   }, [search]);
@@ -16,9 +19,10 @@ function App() {
   return (
     <Fragment>
       <input type="text" value={query} onChange={event => setQuery(event.target.value)} />
-      <button type="button" onClick={() => setSearch(query)}>
+      <button type="button" onClick={() => setSearch(query)} disabled={isLoading}>
         Search
       </button>
+      {isLoading && <div className="loading">Loading ...</div>}
       <ul>
         {data.hits.map(item => (
           <li key={item.objectID}>
