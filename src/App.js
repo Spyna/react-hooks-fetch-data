@@ -2,7 +2,16 @@ import React, { Fragment, useState, useEffect,useReducer } from "react";
 import axios from "axios";
 
 const dataFetchReducer = (state, action) => {
-  //...
+  switch (action.type) {
+    case 'FETCH_INIT':
+      return { ...state };
+    case 'FETCH_SUCCESS':
+      return { ...state };
+    case 'FETCH_FAILURE':
+      return { ...state };
+    default:
+      throw new Error();
+  }
 };
 
 function useHackerNewsApi(initialSearch, initialData) {
